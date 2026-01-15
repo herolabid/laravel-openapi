@@ -1,22 +1,28 @@
 # Laravel OpenAPI
 
-Modern OpenAPI 3.1 specification generator for Laravel 11+. Built with PHP 8.2+ attributes, smart caching, and developer experience in mind.
+**Modern OpenAPI 3.1 documentation generator for Laravel 11+.**
+
+A next-generation approach to API documentation using PHP 8.2+ attributes, replacing annotation-based tools with native language features. Built for developer experience with zero configuration, smart caching, and automatic module detection.
 
 ## Features
 
+### Core Features
 - **Zero Configuration** - Works out of the box with sensible defaults
-- **PHP 8.2+ Attributes** - Modern attribute-based syntax (no DocBlock annotations)
+- **PHP 8.2+ Attributes** - Native attribute-based syntax, no DocBlock annotations
 - **Smart Caching** - 10x faster with intelligent file change detection
-- **Dual UI Support** - Both Swagger UI and ReDoc out of the box
-- **Hot Reload** - Auto-regenerate in development mode
+- **Dual UI Support** - Both Swagger UI and ReDoc included
+- **Hot Reload** - Auto-regenerate specs during development
+
+### Laravel Integration
 - **Modular Architecture** - Auto-detects nwdart/laravel-modules and custom module structures
-- **Auto-detect Security** - Automatically detects Laravel Sanctum and Passport
-- **FormRequest Integration** - Generate schemas from Laravel FormRequest validation rules
-- **API Resource Support** - Extract response schemas from Laravel API Resources
-- **Schema Versioning** - Maintain multiple API versions with separate specifications
-- **SDK Generation** - Generate client SDKs for TypeScript, PHP, Python, and more
-- **Clean Code** - SOLID principles, layered architecture, 80%+ test coverage
-- **Lightweight** - Minimal dependencies and simple configuration
+- **Auto-detect Security** - Automatically detects Laravel Sanctum and Passport configurations
+- **FormRequest Integration** - Generate request schemas from validation rules
+- **API Resource Support** - Extract response schemas from API Resources
+
+### Code Quality
+- **Clean Architecture** - SOLID principles and layered design
+- **Well Tested** - 80%+ test coverage
+- **Minimal Dependencies** - Lightweight and focused
 
 ## Requirements
 
@@ -250,80 +256,6 @@ class UserResource extends JsonResource
 
 Automatically generates response schema with proper structure.
 
-### Schema Versioning
-
-Maintain multiple API versions:
-
-```php
-// config/openapi.php
-'versioning' => [
-    'enabled' => true,
-    'default' => '1',
-    'versions' => [
-        '1' => [
-            'info' => ['version' => '1.0.0', 'title' => 'API v1'],
-            'prefix' => '/v1',
-            'scan' => [
-                'controllers' => [app_path('Http/Controllers/V1')],
-            ],
-        ],
-        '2' => [
-            'info' => ['version' => '2.0.0', 'title' => 'API v2'],
-            'prefix' => '/v2',
-            'scan' => [
-                'controllers' => [app_path('Http/Controllers/V2')],
-            ],
-            'deprecated' => false,
-        ],
-    ],
-],
-```
-
-Access versioned specs at:
-- `/api/docs/v1/spec.json`
-- `/api/docs/v2/spec.json`
-
-### Client SDK Generation
-
-Generate type-safe client SDKs for multiple languages:
-
-```bash
-# Generate TypeScript SDK
-php artisan openapi:sdk typescript --output=./sdks/typescript
-
-# Generate PHP SDK
-php artisan openapi:sdk php --output=./sdks/php
-
-# Generate multiple SDKs
-php artisan openapi:sdk typescript,python,javascript --output=./sdks
-```
-
-Supported languages:
-- TypeScript (with Axios)
-- PHP
-- JavaScript
-- Python
-- Java
-- Go
-- Ruby
-- Swift
-- Kotlin
-
-Configure in `config/openapi.php`:
-
-```php
-'sdk' => [
-    'enabled' => true,
-    'output_path' => base_path('sdks'),
-    'languages' => ['typescript', 'php', 'python'],
-    'options' => [
-        'typescript' => [
-            'package_name' => 'my-api-client',
-        ],
-    ],
-],
-```
-
 ## Artisan Commands
 
 ```bash
@@ -338,9 +270,6 @@ php artisan openapi:validate
 
 # Serve with hot reload
 php artisan openapi:serve
-
-# Generate client SDK
-php artisan openapi:sdk <language> --output=<path>
 ```
 
 ## Available Attributes
@@ -449,20 +378,6 @@ This package follows clean code principles and layered architecture:
 
 Approximately **10x faster** than L5-Swagger with caching enabled.
 
-## Comparison with L5-Swagger
-
-| Feature | L5-Swagger | Laravel OpenAPI |
-|---------|-----------|-----------------|
-| Config Lines | 318 | ~50 |
-| Dependencies | 5+ | 2 |
-| Installation Steps | 4 | 1 |
-| Caching | No | Yes (smart) |
-| Hot Reload | No | Yes |
-| UI Options | Swagger only | Swagger + ReDoc |
-| Attributes Support | Secondary | Native |
-| Module Auto-Detection | No | Yes (nwdart) |
-| PHP Version | 8.0+ | 8.2+ |
-
 ## Development
 
 ```bash
@@ -501,21 +416,49 @@ composer test
 - SOLID Principles
 - Comprehensive PHPDoc
 
+## Why Choose Laravel OpenAPI?
+
+### vs L5-Swagger
+
+| Feature | L5-Swagger | Laravel OpenAPI |
+|---------|-----------|-----------------|
+| Syntax | DocBlock annotations | PHP 8.2+ Attributes |
+| Config Lines | 318 | ~50 |
+| Dependencies | 5+ packages | 2 core packages |
+| Installation | Multi-step process | Single command |
+| Caching | Manual | Smart + Auto-invalidation |
+| Hot Reload | No | Yes |
+| UI Options | Swagger only | Swagger + ReDoc |
+| Module Support | Manual config | Auto-detection |
+| FormRequest | No | Auto-generate schemas |
+| API Resource | No | Auto-extract schemas |
+| Security Detection | Manual | Auto (Sanctum/Passport) |
+
+### Key Advantages
+
+1. **Native PHP Attributes** - No external annotation syntax, just PHP
+2. **Zero Config** - Works immediately after installation
+3. **Smart Caching** - Automatically invalidates when files change
+4. **Module-Aware** - Detects nwdart/laravel-modules automatically
+5. **Laravel-Native** - Deep integration with FormRequests and Resources
+
 ## Roadmap
 
+### Completed ✓
 - [x] Core attribute system
-- [x] Spec generation
-- [x] Dual UI support
-- [x] Smart caching
-- [x] Modular architecture (nwdart/laravel-modules)
-- [x] Auto-detect Laravel Sanctum/Passport
-- [x] Generate from FormRequests
-- [x] Generate from API Resources
-- [x] Schema versioning
-- [x] Client SDK generation
-- [ ] API Documentation playground
+- [x] OpenAPI 3.1 spec generation
+- [x] Dual UI (Swagger + ReDoc)
+- [x] Smart caching with auto-invalidation
+- [x] Modular architecture support
+- [x] Security auto-detection
+- [x] FormRequest schema generation
+- [x] API Resource schema extraction
+
+### Planned
 - [ ] Request/Response examples from tests
-- [ ] API changelog generation
+- [ ] Interactive API playground
+- [ ] Improved type inference
+- [ ] Enhanced validation rules parsing
 
 ## Contributing
 

@@ -1,13 +1,17 @@
 {
     "name": "herolabid/laravel-openapi",
-    "description": "Modern Laravel OpenAPI 3.1 specification generator with smart caching and dual UI support (Swagger UI + ReDoc)",
+    "description": "Modern OpenAPI 3.1 documentation generator for Laravel 11+ using PHP 8.2+ attributes. Zero config, smart caching, auto-detects modules, FormRequests, and API Resources.",
     "keywords": [
         "laravel",
         "openapi",
         "swagger",
         "api-documentation",
         "php8",
-        "attributes"
+        "attributes",
+        "redoc",
+        "laravel-modules",
+        "formrequest",
+        "api-resources"
     ],
     "type": "library",
     "license": "MIT",
