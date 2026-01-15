@@ -129,4 +129,76 @@ return [
             // ],
         ],
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Schema Versioning
+    |--------------------------------------------------------------------------
+    |
+    | Enable API versioning to maintain multiple versions of your API
+    | specification. Each version can have its own paths and schemas.
+    |
+    */
+    'versioning' => [
+        'enabled' => false,
+        'default' => '1',
+
+        'versions' => [
+            // '1' => [
+            //     'info' => [
+            //         'version' => '1.0.0',
+            //         'title' => 'API v1',
+            //     ],
+            //     'prefix' => '/v1',
+            //     'scan' => [
+            //         'controllers' => [app_path('Http/Controllers/V1')],
+            //         'models' => [app_path('Models')],
+            //     ],
+            // ],
+            // '2' => [
+            //     'info' => [
+            //         'version' => '2.0.0',
+            //         'title' => 'API v2',
+            //     ],
+            //     'prefix' => '/v2',
+            //     'scan' => [
+            //         'controllers' => [app_path('Http/Controllers/V2')],
+            //         'models' => [app_path('Models')],
+            //     ],
+            //     'deprecated' => false,
+            // ],
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | SDK Generation
+    |--------------------------------------------------------------------------
+    |
+    | Configure client SDK generation from OpenAPI specification.
+    | Supports multiple languages and frameworks.
+    |
+    */
+    'sdk' => [
+        'enabled' => false,
+
+        // Output directory for generated SDKs
+        'output_path' => base_path('sdks'),
+
+        // Languages to generate SDKs for
+        'languages' => [
+            // 'typescript',
+            // 'php',
+            // 'python',
+            // 'javascript',
+        ],
+
+        // Additional options per language
+        'options' => [
+            // 'typescript' => [
+            //     'package_name' => 'my-api-client',
+            //     'additional_properties' => 'npmName=my-api-client',
+            // ],
+        ],
+    ],
 ];

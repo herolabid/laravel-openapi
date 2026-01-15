@@ -1,6 +1,6 @@
 # Laravel OpenAPI
 
-Modern OpenAPI 3.1 specification generator for Laravel 11+. A lightweight, fast, and developer-friendly alternative to L5-Swagger.
+Modern OpenAPI 3.1 specification generator for Laravel 11+. Built with PHP 8.2+ attributes, smart caching, and developer experience in mind.
 
 ## Features
 
@@ -10,8 +10,13 @@ Modern OpenAPI 3.1 specification generator for Laravel 11+. A lightweight, fast,
 - **Dual UI Support** - Both Swagger UI and ReDoc out of the box
 - **Hot Reload** - Auto-regenerate in development mode
 - **Modular Architecture** - Auto-detects nwdart/laravel-modules and custom module structures
+- **Auto-detect Security** - Automatically detects Laravel Sanctum and Passport
+- **FormRequest Integration** - Generate schemas from Laravel FormRequest validation rules
+- **API Resource Support** - Extract response schemas from Laravel API Resources
+- **Schema Versioning** - Maintain multiple API versions with separate specifications
+- **SDK Generation** - Generate client SDKs for TypeScript, PHP, Python, and more
 - **Clean Code** - SOLID principles, layered architecture, 80%+ test coverage
-- **Lightweight** - Minimal dependencies, ~50 lines of config vs 318 in L5-Swagger
+- **Lightweight** - Minimal dependencies and simple configuration
 
 ## Requirements
 
@@ -179,6 +184,146 @@ If you don't use modules, you can disable it:
 ],
 ```
 
+### Laravel FormRequest Integration
+
+Automatically generate request body schemas from FormRequest validation rules:
+
+```php
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateUserRequest extends FormRequest
+{
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'age' => 'integer|min:18|max:100',
+            'role' => 'required|in:admin,user,guest',
+        ];
+    }
+}
+```
+
+The package automatically converts validation rules to OpenAPI schema:
+
+```yaml
+CreateUserRequest:
+  type: object
+  required: [name, email, role]
+  properties:
+    name:
+      type: string
+      maxLength: 255
+    email:
+      type: string
+      format: email
+    age:
+      type: integer
+      minimum: 18
+      maximum: 100
+    role:
+      type: string
+      enum: [admin, user, guest]
+```
+
+### API Resource Integration
+
+Extract response schemas from Laravel API Resources:
+
+```php
+use Illuminate\Http\Resources\Json\JsonResource;
+
+class UserResource extends JsonResource
+{
+    public function toArray($request): array
+    {
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'created_at' => $this->created_at,
+        ];
+    }
+}
+```
+
+Automatically generates response schema with proper structure.
+
+### Schema Versioning
+
+Maintain multiple API versions:
+
+```php
+// config/openapi.php
+'versioning' => [
+    'enabled' => true,
+    'default' => '1',
+    'versions' => [
+        '1' => [
+            'info' => ['version' => '1.0.0', 'title' => 'API v1'],
+            'prefix' => '/v1',
+            'scan' => [
+                'controllers' => [app_path('Http/Controllers/V1')],
+            ],
+        ],
+        '2' => [
+            'info' => ['version' => '2.0.0', 'title' => 'API v2'],
+            'prefix' => '/v2',
+            'scan' => [
+                'controllers' => [app_path('Http/Controllers/V2')],
+            ],
+            'deprecated' => false,
+        ],
+    ],
+],
+```
+
+Access versioned specs at:
+- `/api/docs/v1/spec.json`
+- `/api/docs/v2/spec.json`
+
+### Client SDK Generation
+
+Generate type-safe client SDKs for multiple languages:
+
+```bash
+# Generate TypeScript SDK
+php artisan openapi:sdk typescript --output=./sdks/typescript
+
+# Generate PHP SDK
+php artisan openapi:sdk php --output=./sdks/php
+
+# Generate multiple SDKs
+php artisan openapi:sdk typescript,python,javascript --output=./sdks
+```
+
+Supported languages:
+- TypeScript (with Axios)
+- PHP
+- JavaScript
+- Python
+- Java
+- Go
+- Ruby
+- Swift
+- Kotlin
+
+Configure in `config/openapi.php`:
+
+```php
+'sdk' => [
+    'enabled' => true,
+    'output_path' => base_path('sdks'),
+    'languages' => ['typescript', 'php', 'python'],
+    'options' => [
+        'typescript' => [
+            'package_name' => 'my-api-client',
+        ],
+    ],
+],
+```
+
 ## Artisan Commands
 
 ```bash
@@ -193,6 +338,9 @@ php artisan openapi:validate
 
 # Serve with hot reload
 php artisan openapi:serve
+
+# Generate client SDK
+php artisan openapi:sdk <language> --output=<path>
 ```
 
 ## Available Attributes
@@ -359,11 +507,15 @@ composer test
 - [x] Spec generation
 - [x] Dual UI support
 - [x] Smart caching
-- [ ] Auto-detect Laravel Sanctum/Passport
-- [ ] Generate from FormRequests
-- [ ] Generate from API Resources
-- [ ] Schema versioning
-- [ ] Client SDK generation
+- [x] Modular architecture (nwdart/laravel-modules)
+- [x] Auto-detect Laravel Sanctum/Passport
+- [x] Generate from FormRequests
+- [x] Generate from API Resources
+- [x] Schema versioning
+- [x] Client SDK generation
+- [ ] API Documentation playground
+- [ ] Request/Response examples from tests
+- [ ] API changelog generation
 
 ## Contributing
 
