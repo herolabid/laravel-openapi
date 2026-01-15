@@ -1,12 +1,32 @@
+# Dependencies
 vendor/
 node_modules/
+
+# Testing
 .phpunit.cache/
+.phpunit.result.cache
 coverage/
+
+# Build
+build/
+dist/
+
+# IDE
 .idea/
 .vscode/
-*.log
+
+# OS
 .DS_Store
 Thumbs.db
-composer.lock
+
+# Logs
+*.log
+
+# Environment
 .env
-.phpunit.result.cache
+.env.local
+.env.*.local
+
+# Cache
+.php-cs-fixer.cache
+.phpstan.cache
